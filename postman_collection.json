@@ -1,0 +1,21 @@
+{
+  "info": {"name":"LibroTrack API","description":"Complete Postman collection for LibroTrack","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "variable": [{"key":"baseUrl","value":"http://localhost:8080"},{"key":"bookId","value":"1"},{"key":"studentId","value":"1"},{"key":"issueId","value":"1"}],
+  "item": [
+    {"name":"Dashboard","request":{"method":"GET","url":"{{baseUrl}}/api/dashboard"}},
+    {"name":"Add Book","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"title\": \"Java: The Complete Reference\",\n  \"author\": \"Herbert Schildt\",\n  \"isbn\": \"9781260440232\",\n  \"category\": \"Programming\",\n  \"totalCopies\": 3\n}"},"url":"{{baseUrl}}/api/books"}},
+    {"name":"List Books","request":{"method":"GET","url":"{{baseUrl}}/api/books"}},
+    {"name":"Search Books","request":{"method":"GET","url":"{{baseUrl}}/api/books?keyword=programming"}},
+    {"name":"Get Book","request":{"method":"GET","url":"{{baseUrl}}/api/books/{{bookId}}"}},
+    {"name":"Add Student","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"name\": \"Visha\",\n  \"email\": \"visha.postman@example.com\"\n}"},"url":"{{baseUrl}}/api/students"}},
+    {"name":"List Students","request":{"method":"GET","url":"{{baseUrl}}/api/students"}},
+    {"name":"Issue Book","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"bookId\": {{bookId}},\n  \"studentId\": {{studentId}}\n}"},"url":"{{baseUrl}}/api/issues"}},
+    {"name":"List All Issues","request":{"method":"GET","url":"{{baseUrl}}/api/issues"}},
+    {"name":"Student Current Issues","request":{"method":"GET","url":"{{baseUrl}}/api/issues/student/{{studentId}}?activeOnly=true"}},
+    {"name":"Get Issue","request":{"method":"GET","url":"{{baseUrl}}/api/issues/{{issueId}}"}},
+    {"name":"Return Book","request":{"method":"PUT","url":"{{baseUrl}}/api/issues/{{issueId}}/return"}},
+    {"name":"Update Book","request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"title\": \"Updated Book\",\n  \"author\": \"Updated Author\",\n  \"isbn\": \"9781260440232\",\n  \"category\": \"Programming\",\n  \"totalCopies\": 4\n}"},"url":"{{baseUrl}}/api/books/{{bookId}}"}},
+    {"name":"Delete Book","request":{"method":"DELETE","url":"{{baseUrl}}/api/books/{{bookId}}"}},
+    {"name":"Delete Student","request":{"method":"DELETE","url":"{{baseUrl}}/api/students/{{studentId}}"}}
+  ]
+}

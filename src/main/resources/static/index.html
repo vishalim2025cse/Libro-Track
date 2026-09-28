@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibroTrack | Library Manager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">L</div><div><strong>LibroTrack</strong><span>Library Manager</span></div></div>
+        <nav>
+            <button class="nav-btn active" data-section="dashboard">▦ <span>Dashboard</span></button>
+            <button class="nav-btn" data-section="books">▤ <span>Books</span></button>
+            <button class="nav-btn" data-section="students">♙ <span>Students</span></button>
+            <button class="nav-btn" data-section="issues">↔ <span>Issues & Returns</span></button>
+        </nav>
+        <div class="sidebar-note"><b>Rules</b><p>14-day loan period</p><p>₹5 fine / late day</p></div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div><div class="eyebrow">LIBRARY CONTROL CENTER</div><h1 id="page-title">Dashboard</h1></div>
+            <button class="refresh-btn" onclick="loadDashboard()">↻ Refresh</button>
+        </header>
+
+        <div id="toast" class="toast"></div>
+
+        <section id="dashboard" class="section active">
+            <div class="stats-grid">
+                <div class="stat"><span>Total Books</span><strong id="totalBooks">0</strong></div>
+                <div class="stat"><span>Total Copies</span><strong id="totalCopies">0</strong></div>
+                <div class="stat"><span>Available Copies</span><strong id="availableCopies">0</strong></div>
+                <div class="stat"><span>Currently Issued</span><strong id="currentlyIssued">0</strong></div>
+                <div class="stat"><span>Students</span><strong id="totalStudents">0</strong></div>
+                <div class="stat"><span>Fine Collected</span><strong id="totalFine">₹0.00</strong></div>
+            </div>
+            <div class="panel-grid">
+                <div class="panel"><div class="panel-head"><h2>Quick actions</h2></div><div class="quick-grid">
+                    <button onclick="openModal('bookModal')">＋ Add Book</button>
+                    <button onclick="openModal('studentModal')">＋ Add Student</button>
+                    <button onclick="openModal('issueModal')">↗ Issue Book</button>
+                    <button onclick="showSection('issues')">↩ Return Book</button>
+                </div></div>
+                <div class="panel"><div class="panel-head"><h2>System status</h2></div><div class="status-row"><span class="dot"></span> Spring Boot API connected</div><div class="status-row"><span class="dot"></span> MySQL persistence enabled</div></div>
+            </div>
+        </section>
+
+        <section id="books" class="section">
+            <div class="section-head"><div><h2>Books</h2><p>Catalogue, copies and availability</p></div><button class="primary" onclick="openModal('bookModal')">＋ Add Book</button></div>
+            <div class="toolbar"><input id="bookSearch" placeholder="Search title, author or category..." oninput="debouncedBooks()"><button onclick="loadBooks()">Search</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th><th>Copies</th><th>Available</th><th>Action</th></tr></thead><tbody id="booksTable"></tbody></table></div>
+        </section>
+
+        <section id="students" class="section">
+            <div class="section-head"><div><h2>Students</h2><p>Registered library members</p></div><button class="primary" onclick="openModal('studentModal')">＋ Add Student</button></div>
+            <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Action</th></tr></thead><tbody id="studentsTable"></tbody></table></div>
+        </section>
+
+        <section id="issues" class="section">
+            <div class="section-head"><div><h2>Issues & Returns</h2><p>Track due dates and automatic fines</p></div><button class="primary" onclick="openModal('issueModal')">↗ Issue Book</button></div>
+            <div class="toolbar"><input id="studentFilter" type="number" placeholder="Student ID (optional)"><label class="check"><input id="activeOnly" type="checkbox"> Current only</label><button onclick="loadIssues()">Load</button></div>
+            <div class="table-wrap"><table><thead><tr><th>ID</th><th>Book</th><th>Student</th><th>Issued</th><th>Due</th><th>Returned</th><th>Fine</th><th>Status</th><th>Action</th></tr></thead><tbody id="issuesTable"></tbody></table></div>
+        </section>
+    </main>
+</div>
+
+<div id="bookModal" class="modal"><div class="modal-card"><button class="close" onclick="closeModal('bookModal')">×</button><h2>Add Book</h2><form id="bookForm"><input name="title" placeholder="Title" required><input name="author" placeholder="Author" required><input name="isbn" placeholder="ISBN" required><input name="category" placeholder="Category" required><input name="totalCopies" type="number" min="1" placeholder="Number of copies" required><button class="primary" type="submit">Save Book</button></form></div></div>
+<div id="studentModal" class="modal"><div class="modal-card"><button class="close" onclick="closeModal('studentModal')">×</button><h2>Add Student</h2><form id="studentForm"><input name="name" placeholder="Student name" required><input name="email" type="email" placeholder="Email" required><button class="primary" type="submit">Save Student</button></form></div></div>
+<div id="issueModal" class="modal"><div class="modal-card"><button class="close" onclick="closeModal('issueModal')">×</button><h2>Issue Book</h2><p class="muted">Loan period: 14 days</p><form id="issueForm"><input name="bookId" type="number" min="1" placeholder="Book ID" required><input name="studentId" type="number" min="1" placeholder="Student ID" required><button class="primary" type="submit">Issue Book</button></form></div></div>
+<script src="/app.js"></script>
+</body>
+</html>
